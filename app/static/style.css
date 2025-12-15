@@ -408,3 +408,74 @@ h1, h2, h3, h4 { color: #593C28; }
     .footer-content { flex-direction: column; text-align: center; gap: 30px; }
     .footer-column { min-width: 100%; }
 }
+
+/* --- USER DROPDOWN (NAVBAR) --- */
+.user-dropdown-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.user-dropdown-btn {
+    background-color: transparent;
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 2px solid transparent;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.user-dropdown-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.user-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px; /* Iets breder voor de zekerheid */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 8px 0;
+    overflow: visible; /* BELANGRIJK: Zorgt dat de 'brug' buiten de box mag steken */
+    margin-top: 10px; /* De visuele ruimte tussen knop en menu */
+}
+
+/* --- NIEUW: DE ONZICHTBARE BRUG --- */
+/* Dit vult het gat tussen de knop en het menu op */
+.user-dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -20px; /* Start 20px boven het menu (overbrugt de margin-top) */
+    left: 0;
+    width: 100%;
+    height: 20px; /* Hoogte van de brug */
+    background: transparent; /* Onzichtbaar, maar de muis 'voelt' het wel */
+    /* background: red; <--- Zet dit even aan als je wilt zien wat het doet! */
+}
+
+.user-dropdown-content a {
+    color: #593C28 !important; /* Forceer bruin want navbar a is wit */
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: normal;
+    text-transform: none; /* Reset uppercase van navbar */
+}
+
+.user-dropdown-content a:hover {
+    background-color: #f8f1e8;
+    color: #E63946 !important;
+}
+
+/* Toon dropdown bij hover over container */
+.user-dropdown-container:hover .user-dropdown-content {
+    display: block;
+}
