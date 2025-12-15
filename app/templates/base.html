@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakkerij Oewist</title>
+    
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/nl.js"></script>
+</head>
+<body class="site-wrapper">
+    
+    {% include 'partials/navbar.html' %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="container alert-container">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'partials/footer.html' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.bestel-groep, .quantity-selector').forEach(function(group) {
+                const input = group.querySelector('.quantity-input');
+                const btnMinus = group.querySelector('.minus, .quantity-btn:first-child');
+                const btnPlus = group.querySelector('.plus, .quantity-btn:last-child');
+
+                if (input && btnMinus && btnPlus) {
+                    btnPlus.onclick = function() {
+                        let val = parseInt(input.value) || 0;
+                        input.value = val + 1;
+                    };
+                    btnMinus.onclick = function() {
+                        let val = parseInt(input.value) || 0;
+                        if (val > 1) input.value = val - 1;
+                    };
+                }
+            }); 
+        });
+    </script>
+</body>
+</html>

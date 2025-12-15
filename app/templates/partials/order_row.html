@@ -1,0 +1,48 @@
+<tr class="order-row status-{{ order.status }}" style="border-bottom: 1px solid #f0f0f0;">
+    <td style="padding: 15px; color: #888;">
+        {% if order.pickup_date %}
+            <div style="font-weight: bold; color: #333;">{{ order.pickup_date.strftime('%d-%m') }}</div>
+        {% else %}
+            <div style="font-weight: bold; color: #ccc;">Datum onbekend</div>
+        {% endif %}
+        <small>#{{ order.id }}</small>
+    </td>
+    <td style="padding: 15px;">
+        <strong>{{ order.profile.full_name }}</strong>
+        
+        <div style="font-size: 0.85em; color: #666; margin-top: 4px; line-height: 1.4;">
+            {% if order.profile.email %}
+                <div style="white-space: nowrap; margin-bottom: 2px;">✉️ {{ order.profile.email }}</div>
+            {% endif %}
+            
+            {% if order.profile.phone_number %}
+                <div style="white-space: nowrap;">📞 {{ order.profile.phone_number }}</div>
+            {% endif %}
+        </div>
+
+        {% if order.remarks %}
+            <br><small style="color: #E63946;">Note: {{ order.remarks }}</small>
+        {% endif %}
+    </td>
+    <td style="padding: 15px;">
+        <ul style="font-size: 0.85em; padding-left: 15px; margin: 0; list-style-type: disc;">
+        {% for item in order.items %}
+            <li>{{ item.quantity }}x {{ item.product.name }}</li>
+        {% endfor %}
+        </ul>
+        <div style="margin-top: 5px; font-weight: bold; color: #593C28;">€ {{ order.total_price }}</div>
+    </td>
+    <td style="padding: 15px;">
+        {% if order.status == 'pending' %}
+            <span class="status-badge status-warn">In wacht</span>
+        {% elif order.status == 'ready' %}
+            <span class="status-badge status-ok">Staat klaar</span>
+        {% elif order.status == 'picked_up' %}
+            <span class="status-badge" style="background:#eee; color:#666;">Opgehaald</span>
+        {% elif order.status == 'cancelled' %}
+            <span class="status-badge" style="background:#FFEBEE; color:#C62828;">Geannuleerd</span>
+        {% endif %}
+    </td>
+    <td style="padding: 15px;">
+        </td>
+</tr>

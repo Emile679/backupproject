@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <h1>
+                {{ settings.welcome_title }}<br>
+                <span style="font-size: 0.7em; font-weight: 600; opacity: 0.9;">
+                    {{ settings.welcome_text }}
+                </span>
+            </h1>
+            <p>{{ settings.intro_text }}</p>
+            <div class="alert-box">
+                <span class="alert-icon">!</span>
+                <p><strong>bestel voor {{ settings.deadline_hour }}u00</strong> om je bestelling vanaf morgen op te halen</p>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ settings.hero_image_url | product_img if settings.hero_image_url else url_for('static', filename='img/brood-foto.jpg') }}" alt="Vers brood">
+        </div>
+    </div>
+</section>
+
+<section class="container filter-section">
+    <h2>Welk brood zoek je?</h2>
+    <div class="filter-buttons">
+        <a href="{{ url_for('main.index') }}" 
+           class="filter-btn {{ 'active' if not current_category or current_category == 'alles' else '' }}">
+           Alles
+        </a>
+        
+        {% for cat in categories %}
+            <a href="{{ url_for('main.index', category=cat) }}" 
+               class="filter-btn {{ 'active' if current_category == cat else '' }}">
+               {{ cat|capitalize }}
+            </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="container product-section">
+    <div class="product-grid">
+        {% for product in products %}
+            <article class="product-card">
+                <div class="product-image">
+                    <img src="{{ product.image_url | product_img }}" alt="{{ product.name }}">
+                </div>
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+                    <span class="product-price">&euro; {{ product.price }}</span>
+
+                    <div class="product-allergen-wrapper">
+                        {% if product.calculated_allergens %}
+                            <div class="allergen-box">
+                                ℹ️ Allergenen: {{ product.calculated_allergens }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="POST" class="bestel-form">
+                        <div class="bestel-groep">
+                            <div class="quantity-selector">
+                                <button type="button" class="quantity-btn minus">-</button>
+                                <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+                                 <button type="button" class="quantity-btn plus">+</button>
+                            </div>
+                            <button type="submit" class="btn-bestel" style="background-color: #593C28; color: white; border: none; padding: 0 20px; border-radius: 6px; cursor: pointer; font-weight: bold; flex-grow: 1;">Bestel</button>
+                        </div>
+                    </form>
+                </div>
+            </article>
+        {% else %}
+            <p>Er zijn nog geen producten gevonden in deze categorie.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
